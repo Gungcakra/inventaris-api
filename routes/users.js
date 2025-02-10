@@ -10,27 +10,40 @@ router.get("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  db.query("SELECT * FROM users WHERE id = ?", [req.params.id], (err, result) => {
-    if (err) return res.status(500).json({ error: err.message });
-    if (result.length === 0) return res.status(404).json({ message: "User not found" });
-    res.json(result[0]);
-  });
+  db.query(
+    "SELECT * FROM users WHERE id = ?",
+    [req.params.id],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      if (result.length === 0)
+        return res.status(404).json({ message: "User not found" });
+      res.json(result[0]);
+    }
+  );
 });
 
 router.post("/", (req, res) => {
   const { username, email, role } = req.body;
-  db.query("INSERT INTO users (username, email, role) VALUES (?, ?, ?)", [username, email, role], (err, result) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ message: "User added", userId: result.insertId });
-  });
+  db.query(
+    "INSERT INTO users (username, email, role) VALUES (?, ?, ?)",
+    [username, email, role],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: "User added", userId: result.insertId });
+    }
+  );
 });
 
 router.put("/:id", (req, res) => {
   const { username, email, role } = req.body;
-  db.query("UPDATE users SET username=?, email=?, role=? WHERE id=?", [username, email, role, req.params.id], (err, result) => {
-    if (err) return res.status(500).json({ error: err.message });
-    res.json({ message: "User updated" });
-  });
+  db.query(
+    "UPDATE users SET username=?, email=?, role=? WHERE id=?",
+    [username, email, role, req.params.id],
+    (err, result) => {
+      if (err) return res.status(500).json({ error: err.message });
+      res.json({ message: "User updated" });
+    }
+  );
 });
 
 // Delete user
